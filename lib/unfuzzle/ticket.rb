@@ -31,6 +31,7 @@ module Unfuzzle
     attribute :updated_at, :from => 'updated-at', :type => :time
     attribute :severity_id, :from => 'severity-id', :type => :integer
     attribute :status
+    attribute :assignee_id, :from => 'assignee-id', :type => :integer
 
     # Return a list of all tickets for an individual project
     def self.find_all_by_project_id(project_id)
@@ -85,7 +86,8 @@ module Unfuzzle
         'number'       => number,
         'summary'      => title,
         'description'  => description,
-        'status'       => status
+        'status'       => status,
+        'assignee-id'  => assignee_id
       }
     end
     
