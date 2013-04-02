@@ -14,6 +14,7 @@ require 'unfuzzle/ticket'
 require 'unfuzzle/severity'
 require 'unfuzzle/priority'
 require 'unfuzzle/component'
+require 'unfuzzle/person'
 
 # = Unfuzzle: A simple wrapper around the Unfuddle JSON API
 #
