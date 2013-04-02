@@ -16,7 +16,7 @@ module Unfuzzle
   #
   class Ticket
 
-    include Graft
+    include Graft::Model
 
     attribute :id, :type => :integer
     attribute :project_id, :from => 'project-id', :type => :integer

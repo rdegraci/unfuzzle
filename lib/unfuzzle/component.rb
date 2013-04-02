@@ -13,7 +13,7 @@ module Unfuzzle
   #
   class Component
     
-    include Graft
+    include Graft::Model
     
     attribute :id, :type => :integer
     attribute :name

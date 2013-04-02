@@ -14,7 +14,7 @@ module Unfuzzle
   #
   class Project
     
-    include Graft
+    include Graft::Model
     
     attribute :id, :type => :integer
     attribute :slug, :from => 'short-name'

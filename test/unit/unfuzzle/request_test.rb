@@ -27,25 +27,29 @@ module Unfuzzle
         Unfuzzle.stubs(:subdomain).with().returns('viget')
         
         request = Unfuzzle::Request.new('/projects')
-        request.endpoint_uri.should == URI.parse('http://viget.unfuddle.com/api/v1/projects.xml')
+        request.endpoint_uri.should == URI.parse('https://viget.unfuddle.com/api/v1/projects.xml')
       end
       
       should "have an endpoint URI with the appropriate format when specified" do
         Unfuzzle.stubs(:subdomain).with().returns('viget')
         
         request = Unfuzzle::Request.new('/projects', nil)
-        request.endpoint_uri.should == URI.parse('http://viget.unfuddle.com/api/v1/projects.xml')
+        request.endpoint_uri.should == URI.parse('https://viget.unfuddle.com/api/v1/projects.xml')
       end
       
       should "have a client" do
-        client = stub()
+        client = mock() do |p|
+          p.expects(:use_ssl=).with(true)
+          p.expects(:verify_mode=).with(OpenSSL::SSL::VERIFY_NONE)
+        end
         
         request = Unfuzzle::Request.new('/projects')
-        request.stubs(:endpoint_uri).with().returns(URI.parse('http://example.com'))
+        request.stubs(:endpoint_uri).with().returns(URI.parse('https://example.com'))
         
-        Net::HTTP.expects(:new).with('example.com').returns(client)
-        
+        Net::HTTP.expects(:new).with('example.com', 443).returns(client)
+
         request.client.should == client
+
       end
       
       should "be able to perform a GET request" do
@@ -53,7 +57,7 @@ module Unfuzzle
         Unfuzzle.stubs(:password).with().returns('password')
         
         request = Unfuzzle::Request.new('/projects')
-        request.stubs(:endpoint_uri).returns(URI.parse('http://example.com/projects'))
+        request.stubs(:endpoint_uri).returns(URI.parse('https://example.com/projects'))
         
         get_request = mock() do |g|
           g.expects(:basic_auth).with('username', 'password')
@@ -69,6 +73,7 @@ module Unfuzzle
         request.stubs(:client).with().returns(client)
         
         request.get.should == response
+
       end
       
       should "be able to perform a PUT request" do
@@ -79,7 +84,7 @@ module Unfuzzle
         
         request = Unfuzzle::Request.new('/projects', request_body)
         
-        request.stubs(:endpoint_uri).returns(URI.parse('http://example.com/projects'))
+        request.stubs(:endpoint_uri).returns(URI.parse('https://example.com/projects'))
         
         put_request = mock() do |p|
           p.expects(:basic_auth).with('username', 'password')
